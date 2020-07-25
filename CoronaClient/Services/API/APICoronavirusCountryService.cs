@@ -16,7 +16,7 @@ namespace CoronaClient.Services.API
         {
             using(HttpClient client = new HttpClient())
             {
-                string requestUri = "https://corona.lmao.ninja/countries?sort=cases";
+                string requestUri = "https://corona.lmao.ninja/v3/covid-19/countries?sort=cases";
 
                 HttpResponseMessage apiResponse = await client.GetAsync(requestUri);
 
