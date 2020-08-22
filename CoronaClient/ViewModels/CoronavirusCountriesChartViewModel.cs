@@ -31,11 +31,13 @@ namespace CoronaClient.ViewModels
             }
         }
 
-        public ObservableCollection<string> CoronavirusCountryNames { get; private set; }
+        public ObservableCollection<string> CoronavirusCountryNames { get; }
 
         public CoronavirusCountriesChartViewModel(ICoronavirusCountryService coronavirusCountryService)
         {
             _coronavirusCountryService = coronavirusCountryService;
+
+            CoronavirusCountryNames = new ObservableCollection<string>();
         }
 
         public static CoronavirusCountriesChartViewModel LoadViewModel(ICoronavirusCountryService coronavirusCountryService, Action<Task> onLoaded = null)
@@ -52,7 +54,12 @@ namespace CoronaClient.ViewModels
             IEnumerable<CoronavirusCountry> countries = await _coronavirusCountryService.GetTopCases(AMOUNT_OF_COUNTRIES);
 
             CoronavirusCountryCaseCounts = new ChartValues<int>(countries.Select(c => c.CaseCount));
-            CoronavirusCountryNames = new ObservableCollection<string>(countries.Select(c => c.CountryName));
+
+            CoronavirusCountryNames.Clear();
+            foreach (string countryName in countries.Select(c => c.CountryName))
+            {
+                CoronavirusCountryNames.Add(countryName);
+            }
         }
     }
 }
